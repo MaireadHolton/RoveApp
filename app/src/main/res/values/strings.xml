@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Rove</string>
+    <string name="button_addVisit">Add Visit</string>
+    <string name="hint_visitTitle">Visit Title</string>
+    <string name="hint_visitDescription">Description </string>
+    <string name="menu_addVisit">Add</string>
 </resources>
