@@ -4,20 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.wit.rove.R
+import org.wit.rove.adapters.RoveAdapter
+import org.wit.rove.adapters.RoveListener
 import org.wit.rove.databinding.ActivityRoveListBinding
-import org.wit.rove.databinding.CardVisitBinding
 import org.wit.rove.main.MainApp
 import org.wit.rove.models.RoveModel
 
-class RoveListActivity : AppCompatActivity() {
+
+class RoveListActivity : AppCompatActivity(), RoveListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityRoveListBinding
@@ -33,7 +32,7 @@ class RoveListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = RoveAdapter(app.visits)
+        binding.recyclerView.adapter = RoveAdapter(app.visits.findAll(), this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -57,34 +56,23 @@ class RoveListActivity : AppCompatActivity() {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.visits.size)
+                notifyItemRangeChanged(0,app.visits.findAll().size)
             }
         }
-}
 
-class RoveAdapter constructor(private var visits: List<RoveModel>) :
-    RecyclerView.Adapter<RoveAdapter.MainHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardVisitBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return MainHolder(binding)
+    override fun onRoveClick(visit: RoveModel) {
+        val launcherIntent = Intent(this, RoveActivity::class.java)
+        launcherIntent.putExtra("visit_edit", visit)
+        getClickResult.launch(launcherIntent)
     }
 
-    override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val visit = visits[holder.adapterPosition]
-        holder.bind(visit)
-    }
-
-    override fun getItemCount(): Int = visits.size
-
-    class MainHolder(private val binding : CardVisitBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(visit: RoveModel) {
-            binding.visitTitle.text = visit.title
-            binding.description.text = visit.description
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.visits.findAll().size)
+            }
         }
-    }
 }

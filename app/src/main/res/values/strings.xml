@@ -4,4 +4,9 @@
     <string name="hint_visitTitle">Visit Title</string>
     <string name="hint_visitDescription">Description </string>
     <string name="menu_addVisit">Add</string>
+    <string name="menu_cancelVisit">Cancel</string>
+    <string name="enter_visit_title"> Please enter a Visit Title </string>
+    <string name="save_visit"> Save Visit </string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_visit_image">Select visit image</string>
 </resources>
