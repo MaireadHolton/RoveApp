@@ -3,6 +3,7 @@ package org.wit.rove.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import org.wit.rove.databinding.CardVisitBinding
 import org.wit.rove.models.RoveModel
 
@@ -33,6 +34,7 @@ class RoveAdapter constructor(private var visits: List<RoveModel>,
         fun bind(visit: RoveModel, listener: RoveListener) {
             binding.visitTitle.text = visit.title
             binding.description.text = visit.description
+            Picasso.get().load(visit.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onRoveClick(visit) }
         }
     }

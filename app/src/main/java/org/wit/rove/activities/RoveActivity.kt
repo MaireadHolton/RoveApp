@@ -1,6 +1,7 @@
 package org.wit.rove.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -21,6 +22,7 @@ class RoveActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
     private lateinit var binding: ActivityRoveBinding
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var visit = RoveModel()
     lateinit var app : MainApp
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,10 @@ class RoveActivity : AppCompatActivity() {
         app = application as MainApp
         i("Rove Activity started...")
 
+        binding.visitLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
+
         if (intent.hasExtra("visit_edit")) {
             edit = true
             visit = intent.extras?.getParcelable("visit_edit")!!
@@ -46,6 +52,9 @@ class RoveActivity : AppCompatActivity() {
             Picasso.get()
                 .load(visit.image)
                 .into(binding.visitImage)
+            if (visit.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_visit_image)
+            }
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -68,6 +77,11 @@ class RoveActivity : AppCompatActivity() {
            showImagePicker(imageIntentLauncher)
         }
         registerImagePickerCallback()
+
+        binding.visitLocation.setOnClickListener {
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -92,11 +106,20 @@ class RoveActivity : AppCompatActivity() {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
                             visit.image = result.data!!.data!!
-                            Picasso.get().load(visit.image).into(binding.visitImage)
+                            Picasso.get()
+                                .load(visit.image)
+                                .into(binding.visitImage)
+                            binding.chooseImage.setText(R.string.change_visit_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
     }
 }

@@ -21,9 +21,13 @@ class RoveMemStore: RoveStore {
     }
 
     override fun update(visit : RoveModel){
-        visit.id = getId()
-        visits.add(visit)
-        logAll()
+        var foundVisit: RoveModel? = visits.find { v -> v.id == visit.id}
+        if (foundVisit != null) {
+            foundVisit.title = visit.title
+            foundVisit.description = visit.description
+            foundVisit.image = visit.image
+            logAll()
+        }
     }
 
     private fun logAll() {
