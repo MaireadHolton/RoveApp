@@ -14,17 +14,19 @@ import org.wit.rove.R
 import org.wit.rove.databinding.ActivityRoveBinding
 import org.wit.rove.helpers.showImagePicker
 import org.wit.rove.main.MainApp
+import org.wit.rove.models.Location
 import org.wit.rove.models.RoveModel
 import timber.log.Timber.Forest.i
 
 class RoveActivity : AppCompatActivity() {
 
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
-
     private lateinit var binding: ActivityRoveBinding
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var visit = RoveModel()
     lateinit var app : MainApp
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var location = Location(52.245696, -7.139102, 15f)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,16 +34,11 @@ class RoveActivity : AppCompatActivity() {
 
         binding = ActivityRoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
         i("Rove Activity started...")
-
-        binding.visitLocation.setOnClickListener {
-            i ("Set Location Pressed")
-        }
 
         if (intent.hasExtra("visit_edit")) {
             edit = true
@@ -76,12 +73,15 @@ class RoveActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
            showImagePicker(imageIntentLauncher)
         }
-        registerImagePickerCallback()
 
         binding.visitLocation.setOnClickListener {
             val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
+
+        registerImagePickerCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -120,6 +120,18 @@ class RoveActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            location = result.data!!.extras?.getParcelable("location")!!
+                            i("Location == $location")
+                        }
+                    }
+
+                    RESULT_CANCELED -> {} else -> {}
+                }
+            }
     }
 }
