@@ -25,7 +25,6 @@ class RoveActivity : AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,10 +70,16 @@ class RoveActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-           showImagePicker(imageIntentLauncher)
+           showImagePicker(imageIntentLauncher, this)
         }
 
         binding.visitLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (visit.zoom != 0f){
+                location.lat = visit.lat
+                location.lng = visit.lng
+                location.zoom = visit.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -105,7 +110,11 @@ class RoveActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
-                            visit.image = result.data!!.data!!
+                            val image = result.data!!.data!!
+                            contentResolver.takePersistableUriPermission(image,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            visit.image= image
+
                             Picasso.get()
                                 .load(visit.image)
                                 .into(binding.visitImage)
@@ -125,11 +134,13 @@ class RoveActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            visit.lat = location.lat
+                            visit.lng = location.lng
+                            visit.zoom = location.zoom
                         }
                     }
-
                     RESULT_CANCELED -> {} else -> {}
                 }
             }

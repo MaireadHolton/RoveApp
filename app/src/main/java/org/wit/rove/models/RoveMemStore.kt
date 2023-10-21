@@ -26,6 +26,9 @@ class RoveMemStore: RoveStore {
             foundVisit.title = visit.title
             foundVisit.description = visit.description
             foundVisit.image = visit.image
+            foundVisit.lat = visit.lat
+            foundVisit.lng = visit.lng
+            foundVisit.zoom = visit.zoom
             logAll()
         }
     }
