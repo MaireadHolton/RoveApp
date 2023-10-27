@@ -8,6 +8,7 @@ import org.wit.rove.helpers.*
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val JSON_FILE = "visits.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
@@ -41,7 +42,17 @@ class RoveJSONStore(private val context: Context) : RoveStore {
 
 
     override fun update(visit: RoveModel) {
-        // todo
+        val visitsList = findAll() as ArrayList<RoveModel>
+        var foundVisit: RoveModel? = visitsList.find { p -> p.id == visit.id}
+        if (foundVisit != null) {
+            foundVisit.title = visit.title
+            foundVisit.description = visit.description
+            foundVisit.image = visit.image
+            foundVisit.lat = visit.lat
+            foundVisit.lng = visit.lng
+            foundVisit.zoom = visit.zoom
+        }
+        serialize()
     }
 
     private fun serialize() {
@@ -56,6 +67,11 @@ class RoveJSONStore(private val context: Context) : RoveStore {
 
     private fun logAll() {
         visits.forEach { Timber.i("$it") }
+    }
+
+    override fun delete(visit: RoveModel) {
+        visits.remove(visit)
+        serialize()
     }
 }
 

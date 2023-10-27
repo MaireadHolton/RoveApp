@@ -15,8 +15,8 @@ class MainApp : Application() {
         Timber.plant(Timber.DebugTree())
         visits = RoveJSONStore(applicationContext)
         i("Rove started")
-        //visits.add(RoveModel("Mabel Lane", ("Bar/ Restaurant")))
-        //visits.add(RoveModel("The lodge bar", ("Bar/ Restaurant")))
-        //visits.add(RoveModel("Collins bar", ("Hotel Bar/ Restaurant")))
+        //visits.add(RoveModel("Mabel Lane", ("Fully accessible entrance, lots of space in front bar area, disabled toilet available, no disabled parking on site but available in Supervalu behind the bar")))
+        //visits.add(RoveModel("The lodge bar", ("Limited parking on site, ramp free access from front entrance")))
+        //visits.add(RoveModel("Collins bar", ("Ramp free access, disabled parking on site, disabled toilets")))
     }
 }

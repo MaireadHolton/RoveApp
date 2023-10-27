@@ -17,7 +17,8 @@ import org.wit.rove.databinding.ActivityMapBinding
 import org.wit.rove.models.Location
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback,
-    GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
+    GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapBinding

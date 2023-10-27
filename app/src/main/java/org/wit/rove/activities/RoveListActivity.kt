@@ -18,8 +18,13 @@ import org.wit.rove.models.RoveModel
 
 class RoveListActivity : AppCompatActivity(), RoveListener {
 
+    private var position: Int = 0
     lateinit var app: MainApp
     private lateinit var binding: ActivityRoveListBinding
+    private val mapIntentLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        )    { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,10 @@ class RoveListActivity : AppCompatActivity(), RoveListener {
                 val launcherIntent = Intent(this, RoveActivity::class.java)
                 getResult.launch(launcherIntent)
             }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, RoveMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -60,9 +69,10 @@ class RoveListActivity : AppCompatActivity(), RoveListener {
             }
         }
 
-    override fun onRoveClick(visit: RoveModel) {
+    override fun onRoveClick(visit: RoveModel, pos : Int) {
         val launcherIntent = Intent(this, RoveActivity::class.java)
         launcherIntent.putExtra("visit_edit", visit)
+        position = pos
         getClickResult.launch(launcherIntent)
     }
 
@@ -74,5 +84,6 @@ class RoveListActivity : AppCompatActivity(), RoveListener {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.visits.findAll().size)
             }
+            else if (it.resultCode == 99) (binding.recyclerView.adapter)?.notifyItemRemoved(position)
         }
 }

@@ -9,6 +9,7 @@ var image: Uri = Uri.EMPTY
 data class RoveModel (var id: Long = 0,
                       var title: String = "",
                       var description: String = "",
+                      //var rating: String = "",
                       var image: Uri = Uri.EMPTY,
                       var lat : Double = 0.0,
                       var lng : Double = 0.0,

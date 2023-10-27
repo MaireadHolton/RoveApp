@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import android.widget.RatingBar
+import android.widget.Button
+import android.widget.Toast
 import org.wit.rove.R
 import org.wit.rove.databinding.ActivityRoveBinding
 import org.wit.rove.helpers.showImagePicker
@@ -25,11 +29,13 @@ class RoveActivity : AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var edit = false
+        edit = false
+        //val rBar = RatingBar(this)
 
         binding = ActivityRoveBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -69,12 +75,18 @@ class RoveActivity : AppCompatActivity() {
             finish()
         }
 
+        /*binding.btnAddRating.setOnClickListener() {
+            val star = rBar.rating.toString()
+            Toast.makeText(this, "Given Rating: "+star,
+                Toast.LENGTH_SHORT).show()
+        }*/
+
         binding.chooseImage.setOnClickListener {
            showImagePicker(imageIntentLauncher, this)
         }
 
         binding.visitLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
+            val location = Location(51.8983, -8.4756, 15f)
             if (visit.zoom != 0f){
                 location.lat = visit.lat
                 location.lng = visit.lng
@@ -91,11 +103,17 @@ class RoveActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_visit, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                setResult(99)
+                app.visits.delete(visit)
+                finish()
+            }
             R.id.item_cancel -> {
                 finish()
             }
@@ -146,3 +164,4 @@ class RoveActivity : AppCompatActivity() {
             }
     }
 }
+

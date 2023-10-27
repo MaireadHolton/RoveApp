@@ -8,7 +8,7 @@ import org.wit.rove.databinding.CardVisitBinding
 import org.wit.rove.models.RoveModel
 
 interface RoveListener {
-    fun onRoveClick(visit: RoveModel)
+    fun onRoveClick(visit: RoveModel, position : Int)
 }
 class RoveAdapter constructor(private var visits: List<RoveModel>,
     private val listener: RoveListener) :
@@ -35,7 +35,7 @@ class RoveAdapter constructor(private var visits: List<RoveModel>,
             binding.visitTitle.text = visit.title
             binding.description.text = visit.description
             Picasso.get().load(visit.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onRoveClick(visit) }
+            binding.root.setOnClickListener { listener.onRoveClick(visit, adapterPosition) }
         }
     }
 }

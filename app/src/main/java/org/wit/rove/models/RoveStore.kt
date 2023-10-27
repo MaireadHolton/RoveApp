@@ -5,4 +5,6 @@ interface RoveStore {
         fun create(visit: RoveModel)
 
         fun update(visit: RoveModel)
+
+        fun delete(visit: RoveModel)
 }

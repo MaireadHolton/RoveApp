@@ -25,6 +25,7 @@ class RoveMemStore: RoveStore {
         if (foundVisit != null) {
             foundVisit.title = visit.title
             foundVisit.description = visit.description
+            //foundVisit.rating = visit.rating
             foundVisit.image = visit.image
             foundVisit.lat = visit.lat
             foundVisit.lng = visit.lng
@@ -35,5 +36,9 @@ class RoveMemStore: RoveStore {
 
     private fun logAll() {
         visits.forEach { i("${it}")}
+    }
+
+    override fun delete(visit: RoveModel) {
+        visits.remove(visit)
     }
 }
