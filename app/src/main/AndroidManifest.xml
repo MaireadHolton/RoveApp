@@ -27,11 +27,11 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".activities.MapActivity"
+            android:name=".views.editLocation.EditLocationView"
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".activities.RoveListActivity"
+            android:name=".views.roveList.RoveListView"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".activities.RoveActivity">
+        <activity android:name=".views.Rove.RoveView">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import org.wit.rove.databinding.ActivityRoveMapsBinding
 import org.wit.rove.databinding.ContentRoveMapsBinding
 import org.wit.rove.main.MainApp
@@ -47,7 +48,12 @@ class RoveMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
+        //val visit = marker.tag as RoveModel
+        val tag = marker.tag as Long
+        val visit = app.visits.findById(tag)
+        contentBinding.currentTitle.text = visit!!.title
+        contentBinding.currentDescription.text = visit.description
+        Picasso.get().load(visit.image).into(contentBinding.currentImage)
 
         return false
     }

@@ -69,6 +69,11 @@ class RoveJSONStore(private val context: Context) : RoveStore {
         visits.forEach { Timber.i("$it") }
     }
 
+    override fun findById(id:Long) : RoveModel? {
+        val foundVisit: RoveModel? = visits.find { it.id == id }
+        return foundVisit
+    }
+
     override fun delete(visit: RoveModel) {
         visits.remove(visit)
         serialize()

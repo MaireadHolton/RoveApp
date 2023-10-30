@@ -1,4 +1,4 @@
-package org.wit.rove.adapters
+package org.wit.rove.views.roveList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,8 @@ interface RoveListener {
     fun onRoveClick(visit: RoveModel, position : Int)
 }
 class RoveAdapter constructor(private var visits: List<RoveModel>,
-    private val listener: RoveListener) :
+    private val listener: RoveListener
+) :
     RecyclerView.Adapter<RoveAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {

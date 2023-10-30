@@ -34,6 +34,11 @@ class RoveMemStore: RoveStore {
         }
     }
 
+    override fun findById(id:Long) : RoveModel? {
+        val foundVisit: RoveModel? = visits.find { it.id == id }
+        return foundVisit
+    }
+
     private fun logAll() {
         visits.forEach { i("${it}")}
     }
