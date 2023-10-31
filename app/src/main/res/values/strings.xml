@@ -16,4 +16,8 @@
     <string name="menu_deleteVisit">Delete</string>
     <string name="title_activity_rove_maps">Map of all visits</string>
     <string name="menu_saveVisit">Save</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="logout">Logout</string>
 </resources>

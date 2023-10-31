@@ -31,8 +31,9 @@
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".views.roveList.RoveListView"
-            android:exported="true">
+            android:name=".views.Rove.HomePage"
+            android:exported="true"
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,6 +43,11 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+        </activity>
+
+        <activity
+            android:name=".views.roveList.RoveListView"
+            android:exported="true">
         </activity>
         <activity android:name=".views.Rove.RoveView">
             <meta-data
