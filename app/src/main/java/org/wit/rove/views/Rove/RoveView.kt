@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -15,6 +16,7 @@ class RoveView: AppCompatActivity() {
     private lateinit var binding: ActivityRoveBinding
     private lateinit var presenter: RovePresenter
     var visit = RoveModel()
+    //val visitRating = findViewById<RatingBar>(R.id.ratingBar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,11 @@ class RoveView: AppCompatActivity() {
             presenter.cacheVisit(binding.visitTitle.text.toString(), binding.description.text.toString())
             presenter.doSetLocation()
         }
+
+        /*binding.btnAddRating.setOnClickListener {
+            presenter.cacheVisit(binding.visitTitle.text.toString(), binding.description.text.toString())
+            presenter.doSetRating()
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,6 +54,15 @@ class RoveView: AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_save -> {
+                if (binding.visitTitle.text.toString().isEmpty()) {
+                    Snackbar.make(binding.root, R.string.enter_visit_title, Snackbar.LENGTH_LONG)
+                        .show()
+                } else {
+                    // presenter.cacheVisit(binding.visitTitle.text.toString(), binding.description.text.toString())
+                    presenter.doAddOrSave(binding.visitTitle.text.toString(), binding.description.text.toString())
+                }
+            }
             R.id.item_delete -> {
                 presenter.doDelete()
             }

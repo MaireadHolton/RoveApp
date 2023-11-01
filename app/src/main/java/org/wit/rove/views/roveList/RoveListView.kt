@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.rove.R
+import android.widget.RatingBar
 import org.wit.rove.databinding.ActivityRoveListBinding
 import org.wit.rove.main.MainApp
 import org.wit.rove.models.RoveModel
@@ -16,6 +17,7 @@ class RoveListView : AppCompatActivity(), RoveListener {
     private lateinit var binding: ActivityRoveListBinding
     lateinit var presenter: RoveListPresenter
     private var position: Int = 0
+    //val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

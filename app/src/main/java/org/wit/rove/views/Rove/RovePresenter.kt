@@ -20,6 +20,8 @@ class RovePresenter(private val view: RoveView) {
     var binding: ActivityRoveBinding = ActivityRoveBinding.inflate(view.layoutInflater)
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var ratingIntentLauncher : ActivityResultLauncher<Intent>
+
     var edit = false;
 
     init {
@@ -65,6 +67,7 @@ class RovePresenter(private val view: RoveView) {
             .putExtra("location", location)
         mapIntentLauncher.launch(launcherIntent)
     }
+
     fun cacheVisit (title: String, description: String) {
         visit.title = title;
         visit.description = description
@@ -110,5 +113,20 @@ class RovePresenter(private val view: RoveView) {
                 }
             }
     }
+
+    /*private fun registerRatingCallback() {
+        ratingIntentLauncher =
+            view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {result ->
+                when (result.resultCode) {
+                    AppCompatActivity.RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i("Got Rating ${result.data.toString()}")
+                            val ratingBar = result.data!!.extras?.getParcelable<Rating>("rating")!!
+                            Timber.i("Rating == $ratingBar")
+                            visit.rating = ratingBar.rating
+
+            }
+    }*/
 }
 
